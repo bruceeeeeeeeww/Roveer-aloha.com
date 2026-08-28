@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0d655f" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <title>羅浮音樂會｜ALOHA 人氣票選</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="page-bg"></div>
+
+  <main class="app-shell">
+    <header class="hero">
+
+      <h1>🏖️ 羅浮音樂會🍹</h1>
+      <div class="subtitle">ALOHA 夏威夷之夜</div>
+
+      <p class="hero-copy">
+        <strong>一首歌，一段故事。</strong><br>
+        在歌聲、營火與夥伴之間，投下今晚最打動你的一票。
+      </p>
+
+      <div class="award-note">🏆 人氣票選第一名，可獲得專屬獎盃</div>
+    </header>
+
+    <section id="gateView" class="panel">
+      <div class="section-kicker">ALOHA VOTE</div>
+      <h2>輸入你的投票碼</h2>
+      <p class="muted">每組投票碼僅能使用一次，送出後無法修改。</p>
+
+      <label class="field-label" for="voteCode">投票碼</label>
+      <div class="code-row">
+        <div class="code-input-wrap">
+          <span class="code-prefix">ALOHA-</span>
+          <input id="voteCode" class="code-input code-suffix" autocomplete="off" inputmode="text"
+                 maxlength="4" placeholder="8K4P" aria-label="投票碼後四碼" />
+        </div>
+        <button id="validateBtn" class="primary-btn">開始投票 🌺</button>
+      </div>
+      <p id="gateMsg" class="message" role="status"></p>
+    </section>
+
+    <section id="voteView" class="hidden">
+      <div class="vote-head">
+        <div>
+          <div class="section-kicker">ONE SONG · ONE STORY</div>
+          <h2>今晚，哪一首歌最打動你？</h2>
+          <p class="muted">看看每位夥伴的歌與故事，再投下唯一的一票。</p>
+        </div>
+        <div class="vote-head-actions">
+          <button id="backHomeBtn" class="home-btn" type="button">← 回首頁</button>
+          <div id="codeBadge" class="code-badge"></div>
+        </div>
+      </div>
+
+      <div id="candidateGrid" class="candidate-grid"></div>
+    </section>
+
+    <section id="successView" class="panel success hidden">
+      <div class="trophy">🏆</div>
+      <div class="section-kicker">MAHALO</div>
+      <h2>投票完成</h2>
+      <p id="successText"></p>
+      <p class="muted">謝謝你讓這個夜晚，多了一段屬於大家的共同回憶。</p>
+      <button id="voteAgainBtn" class="primary-btn" type="button">使用另一組投票碼再投一票 🌺</button>
+    </section>
+  
+  <footer class="site-footer">
+    <button id="adminEntryBtn" class="admin-entry" type="button">⚙️ 管理員</button>
+  </footer>
+
+</main>
+
+  <div id="storyModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close" data-close="story" aria-label="關閉">×</button>
+      <div class="section-kicker">一首歌，一段故事</div>
+      <h3 id="storyTitle"></h3>
+      <p id="storyBody" class="story-body"></p>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close" data-close="confirm" aria-label="關閉">×</button>
+      <div class="section-kicker">FINAL VOTE</div>
+      <h3>確認投下唯一的一票？</h3>
+      <div id="confirmCandidate" class="confirm-candidate"></div>
+      <p class="warning">投票送出後無法修改。</p>
+      <div class="modal-actions">
+        <button id="cancelVoteBtn" class="secondary-btn">返回重選</button>
+        <button id="submitVoteBtn" class="primary-btn">確認投票</button>
+      </div>
+      <p id="confirmMsg" class="message" role="status"></p>
+    </div>
+  </div>
+
+
+  <div id="adminLoginModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close" data-close="adminLogin" aria-label="關閉">×</button>
+      <div class="section-kicker">ADMIN</div>
+      <h3>管理員驗證</h3>
+      <p class="muted">請輸入管理 PIN。</p>
+      <input id="adminPinInput" class="code-input" type="password" inputmode="numeric"
+             maxlength="12" placeholder="管理 PIN" />
+      <div class="modal-actions">
+        <button id="adminCancelBtn" class="secondary-btn">取消</button>
+        <button id="adminLoginBtn" class="primary-btn">進入管理頁</button>
+      </div>
+      <p id="adminLoginMsg" class="message" role="status"></p>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
