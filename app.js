@@ -324,3 +324,155 @@ $("voteCode").addEventListener("input", e => {
 $("backHomeBtn").addEventListener("click", resetToHome);
 $("voteAgainBtn").addEventListener("click", resetToHome);
 
+
+
+function showSongRequest() {
+  $("gateView").classList.add("hidden");
+  $("voteView").classList.add("hidden");
+  $("successView").classList.add("hidden");
+  $("songRequestView").classList.remove("hidden");
+  setMessage($("songRequestMsg"), "");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function hideSongRequest() {
+  $("songRequestView").classList.add("hidden");
+  $("gateView").classList.remove("hidden");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function imageFileToPayload(file) {
+  if (!file) return null;
+  if (!file.type.startsWith("image/")) throw new Error("請選擇圖片檔案");
+
+  const bitmap = await createImageBitmap(file);
+  const maxSide = 1200;
+  const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));
+  const width = Math.max(1, Math.round(bitmap.width * scale));
+  const height = Math.max(1, Math.round(bitmap.height * scale));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(bitmap, 0, 0, width, height);
+  bitmap.close();
+
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.82));
+  if (!blob) throw new Error("照片處理失敗");
+
+  const dataUrl = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(new Error("照片讀取失敗"));
+    reader.readAsDataURL(blob);
+  });
+
+  return {
+    name: (file.name || "onsite-photo").replace(/\.[^.]+$/, "") + ".jpg",
+    mimeType: "image/jpeg",
+    base64: String(dataUrl).split(",")[1]
+  };
+}
+
+async function submitSongRequest(event) {
+  event.preventDefault();
+
+  const btn = $("submitSongRequestBtn");
+  const msg = $("songRequestMsg");
+
+  const name = $("reqName").value.trim();
+  const song = $("reqSong").value.trim();
+
+  if (!name || !song) {
+    setMessage(msg, "請至少填寫中文全名與歌曲名稱");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "正在加入歌單…";
+  setMessage(msg, "");
+
+  try {
+    let photo = null;
+    const file = $("reqPhotoCamera").files[0] || $("reqPhotoGallery").files[0];
+    if (file) {
+      if (file.size > 12 * 1024 * 1024) {
+        throw new Error("原始照片請小於 12 MB");
+      }
+      photo = await imageFileToPayload(file);
+    }
+
+    const result = await apiPost({
+      action: "submitSongRequest",
+      data: {
+        county: $("reqCounty").value.trim(),
+        group: $("reqGroup").value.trim(),
+        name,
+        nickname: $("reqNickname").value.trim(),
+        song,
+        artist: $("reqArtist").value.trim(),
+        songUrl: $("reqSongUrl").value.trim(),
+        story: $("reqStory").value.trim(),
+        photo
+      }
+    });
+
+    if (!result.ok) {
+      setMessage(msg, result.message || "送出失敗");
+      return;
+    }
+
+    $("songRequestSuccessText").textContent =
+      `${result.displayName || name}｜${song} 已成功加入，之後重新進入投票頁就會出現在候選名單中。`;
+    $("songRequestSuccessModal").classList.remove("hidden");
+    $("songRequestForm").reset();
+    $("reqPhotoCamera").value = "";
+    $("reqPhotoGallery").value = "";
+    $("photoPreviewWrap").classList.add("hidden");
+    $("photoPreview").removeAttribute("src");
+  } catch (err) {
+    console.error(err);
+    setMessage(msg, err.message || "目前無法送出，請稍後再試");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "🌺 加入今晚歌單";
+  }
+}
+
+function previewRequestPhoto(sourceId) {
+  const cameraFile = $("reqPhotoCamera").files[0];
+  const galleryFile = $("reqPhotoGallery").files[0];
+  const file = sourceId === "camera" ? cameraFile : galleryFile;
+
+  if (!file) {
+    $("photoPreviewWrap").classList.add("hidden");
+    $("photoPreview").removeAttribute("src");
+    return;
+  }
+
+  // 選了其中一種來源後，清掉另一個來源，避免送出時拿錯舊檔案
+  if (sourceId === "camera") {
+    $("reqPhotoGallery").value = "";
+  } else {
+    $("reqPhotoCamera").value = "";
+  }
+
+  const url = URL.createObjectURL(file);
+  $("photoPreview").src = url;
+  $("photoPreviewWrap").classList.remove("hidden");
+  $("photoPreview").onload = () => URL.revokeObjectURL(url);
+}
+
+
+$("openSongRequestBtn").addEventListener("click", showSongRequest);
+$("songRequestBackBtn").addEventListener("click", hideSongRequest);
+$("songRequestForm").addEventListener("submit", submitSongRequest);
+$("takePhotoBtn").addEventListener("click", () => $("reqPhotoCamera").click());
+$("choosePhotoBtn").addEventListener("click", () => $("reqPhotoGallery").click());
+$("reqPhotoCamera").addEventListener("change", () => previewRequestPhoto("camera"));
+$("reqPhotoGallery").addEventListener("change", () => previewRequestPhoto("gallery"));
+$("songRequestDoneBtn").addEventListener("click", () => {
+  $("songRequestSuccessModal").classList.add("hidden");
+  hideSongRequest();
+});

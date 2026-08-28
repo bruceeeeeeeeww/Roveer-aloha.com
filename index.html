@@ -40,6 +40,90 @@
         <button id="validateBtn" class="primary-btn">開始投票 🌺</button>
       </div>
       <p id="gateMsg" class="message" role="status"></p>
+
+      <div class="onsite-divider"><span>或</span></div>
+      <div class="onsite-cta">
+        <div>
+          <strong>臨時想唱一首？</strong>
+          <div class="muted">現場也可以直接加入今晚的歌單與票選。</div>
+        </div>
+        <button id="openSongRequestBtn" class="song-request-btn" type="button">🎤 現場點歌</button>
+      </div>
+    </section>
+
+    <section id="songRequestView" class="panel hidden">
+      <div class="request-head">
+        <div>
+          <div class="section-kicker">LIVE SONG REQUEST</div>
+          <h2>🎤 現場點歌</h2>
+          <p class="muted">填完送出後會直接加入今晚的歌單與票選名單。</p>
+        </div>
+        <button id="songRequestBackBtn" class="home-btn" type="button">← 回首頁</button>
+      </div>
+
+      <form id="songRequestForm" class="request-form">
+        <div class="form-grid">
+          <label class="form-field">
+            <span>我的縣市團次</span>
+            <input id="reqCounty" type="text" placeholder="例如：台北市130" />
+          </label>
+
+          <label class="form-field">
+            <span>我們團的團名是</span>
+            <input id="reqGroup" type="text" placeholder="例如：淡江大學童軍團" />
+          </label>
+
+          <label class="form-field">
+            <span>我的中文全名 <b>*</b></span>
+            <input id="reqName" type="text" required placeholder="請輸入姓名" />
+          </label>
+
+          <label class="form-field">
+            <span>我的小名／綽號</span>
+            <input id="reqNickname" type="text" placeholder="今晚大家怎麼叫你？" />
+          </label>
+
+          <label class="form-field">
+            <span>我想唱的歌是… <b>*</b></span>
+            <input id="reqSong" type="text" required placeholder="歌曲名稱" />
+          </label>
+
+          <label class="form-field">
+            <span>這首歌的主唱是…</span>
+            <input id="reqArtist" type="text" placeholder="歌手／樂團" />
+          </label>
+
+          <label class="form-field form-span-2">
+            <span>如果有歌曲的網址請貼上</span>
+            <input id="reqSongUrl" type="url" placeholder="YouTube、Spotify 等連結（可留白）" />
+          </label>
+
+          <label class="form-field form-span-2">
+            <span>請分享你選擇這首歌的理由</span>
+            <textarea id="reqStory" rows="4" placeholder="也許是一段回憶、帶給你力量的時刻，或最想和夥伴一起唱的理由。"></textarea>
+          </label>
+
+          <div class="form-field form-span-2">
+            <span>你的生活照</span>
+            <div class="photo-source-actions">
+              <button id="takePhotoBtn" class="photo-source-btn" type="button">📷 拍照</button>
+              <button id="choosePhotoBtn" class="photo-source-btn alt" type="button">🖼️ 從相簿選擇</button>
+            </div>
+            <input id="reqPhotoCamera" class="hidden-file-input" type="file" accept="image/*" capture="environment" />
+            <input id="reqPhotoGallery" class="hidden-file-input" type="file" accept="image/*" />
+            <small>手機可直接拍照或從相簿選擇；系統會自動縮圖後上傳。可留白。</small>
+          </div>
+        </div>
+
+        <div id="photoPreviewWrap" class="photo-preview-wrap hidden">
+          <img id="photoPreview" alt="照片預覽" />
+        </div>
+
+        <button id="submitSongRequestBtn" class="primary-btn request-submit" type="submit">
+          🌺 加入今晚歌單
+        </button>
+        <p id="songRequestMsg" class="message" role="status"></p>
+      </form>
     </section>
 
     <section id="voteView" class="hidden">
@@ -97,6 +181,16 @@
     </div>
   </div>
 
+
+  <div id="songRequestSuccessModal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card request-success-card">
+      <div class="request-success-icon">🌺🎤</div>
+      <div class="section-kicker">ALOHA</div>
+      <h3>已加入今晚歌單！</h3>
+      <p id="songRequestSuccessText" class="muted"></p>
+      <button id="songRequestDoneBtn" class="primary-btn" type="button">回首頁</button>
+    </div>
+  </div>
 
   <div id="adminLoginModal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-card">

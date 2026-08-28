@@ -646,3 +646,173 @@ button:disabled{opacity:.55;cursor:not-allowed;transform:none!important}
     width:100%;
   }
 }
+
+
+/* V2.0｜現場點歌 */
+.onsite-divider{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:24px 0 18px;
+  color:#a09285;
+  font-size:13px;
+  font-weight:900;
+}
+.onsite-divider::before,
+.onsite-divider::after{
+  content:"";
+  flex:1;
+  height:1px;
+  background:#e6dac7;
+}
+.onsite-cta{
+  display:flex;
+  gap:16px;
+  align-items:center;
+  justify-content:space-between;
+  padding:16px 18px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#fff2cf,#fff8e8);
+  border:1px solid #f1dba8;
+}
+.song-request-btn{
+  flex:none;
+  border:0;
+  border-radius:999px;
+  padding:13px 20px;
+  min-height:48px;
+  color:white;
+  font-size:15px;
+  font-weight:1000;
+  cursor:pointer;
+  background:linear-gradient(135deg,#0b847c,#087167);
+  box-shadow:0 8px 18px rgba(7,94,85,.20);
+}
+.request-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+}
+.request-form{
+  margin-top:8px;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.form-field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  font-weight:900;
+  color:#55463e;
+}
+.form-field b{color:#d85948}
+.form-field input,
+.form-field textarea{
+  width:100%;
+  border:2px solid #e3d7c5;
+  background:white;
+  border-radius:14px;
+  padding:13px 14px;
+  font:inherit;
+  color:var(--ink);
+  outline:none;
+}
+.form-field textarea{
+  resize:vertical;
+  line-height:1.65;
+}
+.form-field input:focus,
+.form-field textarea:focus{
+  border-color:var(--teal);
+  box-shadow:0 0 0 4px rgba(13,107,102,.10);
+}
+.form-field small{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:600;
+  line-height:1.55;
+}
+.form-span-2{grid-column:1 / -1}
+.request-submit{
+  margin-top:20px;
+  min-width:220px;
+}
+.photo-preview-wrap{
+  margin-top:14px;
+  width:min(240px,100%);
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid #eadac0;
+  background:#eee3d1;
+}
+.photo-preview-wrap img{
+  display:block;
+  width:100%;
+  aspect-ratio:4/3;
+  object-fit:cover;
+}
+.request-success-card{text-align:center}
+.request-success-icon{font-size:54px;margin-bottom:6px}
+@media(max-width:650px){
+  .onsite-cta{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .song-request-btn{width:100%}
+  .request-head{flex-direction:column}
+  .form-grid{grid-template-columns:1fr}
+  .form-span-2{grid-column:auto}
+  .request-submit{width:100%}
+}
+
+
+/* V2.1｜手機拍照 / 相簿雙按鈕 */
+.photo-source-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.photo-source-btn{
+  border:none;
+  border-radius:999px;
+  min-height:50px;
+  padding:12px 16px;
+  color:#fff;
+  font-size:15px;
+  font-weight:1000;
+  cursor:pointer;
+  background:linear-gradient(135deg,#0b847c,#087167);
+  box-shadow:0 8px 18px rgba(7,94,85,.20);
+}
+.photo-source-btn.alt{
+  background:linear-gradient(135deg,#ef9a4b,#e86e55);
+  box-shadow:0 8px 18px rgba(200,98,59,.20);
+}
+.photo-source-btn:hover{
+  transform:translateY(-1px);
+}
+.hidden-file-input{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+}
+@media(max-width:520px){
+  .photo-source-actions{
+    grid-template-columns:1fr;
+  }
+  .photo-source-btn{
+    width:100%;
+    min-height:52px;
+  }
+}
